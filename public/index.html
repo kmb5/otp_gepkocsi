@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gépkocsi Nyeremény Ellenőrző</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200;1,9..144,200&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="eyebrow">OTP Bank · Gépkocsinyeremény-betét</div>
+    <h1 class="title">Nyeremény<span>ellenőrző</span></h1>
+    <p class="subtitle">Add meg a betétszámaidat, és kiderítjük, nyertél-e autót a sorsoláson.</p>
+  </header>
+
+  <!-- Input card -->
+  <div class="card" id="input-card">
+    <div class="field-header">
+      <span class="field-label">Betétszámok</span>
+      <span class="count-badge" id="count-badge">0 / 20</span>
+    </div>
+    <textarea
+      id="ids-input"
+      placeholder="400325067&#10;400325068&#10;400325069"
+      spellcheck="false"
+      autocomplete="off"
+      aria-label="Betétszámok megadása"
+    ></textarea>
+    <p class="hint">// soronként egy szám · vagy vesszővel / szóközzel elválasztva</p>
+    <div class="warn-box" id="warn-box">
+      ⚠ Legfeljebb 20 azonosítót lehet egyszerre ellenőrizni — az első 20 kerül feldolgozásra.
+    </div>
+    <div class="btn-row">
+      <button class="check-btn" id="check-btn" disabled aria-label="Ellenőrzés indítása">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M4.5 7l2 2 3-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Ellenőrzés
+      </button>
+      <button class="copy-btn" id="copy-btn" disabled aria-label="URL másolása">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+          <path d="M5.5 7.5a3 3 0 004.2.1l1.3-1.3a3 3 0 00-4.2-4.2l-.8.7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          <path d="M7.5 5.5a3 3 0 00-4.2-.1L2 6.7a3 3 0 004.2 4.2l.7-.7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+        <span class="copy-label">URL másolása</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Progress card -->
+  <div class="card progress-card" id="progress-card">
+    <div class="progress-head">
+      <span class="progress-label">Folyamat</span>
+      <span class="progress-frac" id="p-frac">0 / 0</span>
+    </div>
+    <div class="track">
+      <div class="fill" id="p-fill"></div>
+    </div>
+    <div class="status-line">
+      <div class="s-dot" id="s-dot"></div>
+      <span class="s-msg" id="s-msg">Inicializálás…</span>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div class="card summary" id="summary">
+    <div class="summary-inner">
+      <div class="stat">
+        <div class="stat-num n-car" id="sum-car">0</div>
+        <div class="stat-label">Autó</div>
+      </div>
+      <div class="stat-div"></div>
+      <div class="stat">
+        <div class="stat-num n-cash" id="sum-cash">0</div>
+        <div class="stat-label">Készpénz</div>
+      </div>
+      <div class="stat-div"></div>
+      <div class="stat">
+        <div class="stat-num" id="sum-total">0</div>
+        <div class="stat-label">Ellenőrzött</div>
+      </div>
+      <div class="stat-div"></div>
+      <div class="stat">
+        <div class="stat-num" id="sum-errors">0</div>
+        <div class="stat-label">Hiba</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div class="results" id="results" role="list" aria-label="Ellenőrzési eredmények"></div>
+
+  <!-- Reset -->
+  <button class="reset-btn" id="reset-btn">↺ &nbsp;Új ellenőrzés</button>
+
+  <footer>
+    nem hivatalos eszköz &nbsp;·&nbsp; adatok forrása: OTP Bank API
+  </footer>
+
+</div>
+<script src="script.js"></script>
+</body>
+</html>
