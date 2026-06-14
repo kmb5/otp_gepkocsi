@@ -130,30 +130,30 @@ function classify(data) {
 
 // ── Inline SVGs ────────────────────────────────────────────────────
 const SVG = {
-  clock: `<svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-    <circle cx="6" cy="6" r="4.5" stroke="#3a5e3e" stroke-width="1.2"/>
-    <path d="M6 3.5V6l1.5 1.5" stroke="#3a5e3e" stroke-width="1.2" stroke-linecap="round"/>
+  clock: `<svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+    <circle cx="7" cy="7" r="5.5" stroke="#3E4260" stroke-width="1.4"/>
+    <path d="M7 4V7l2 2" stroke="#3E4260" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>`,
 
-  checkGreen: `<svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-    <path d="M2.5 6l2.5 2.5 4.5-5" stroke="#4ade80" stroke-width="1.6"
+  checkGreen: `<svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+    <path d="M2.5 7l3 3 6-6" stroke="#4ade80" stroke-width="1.8"
       stroke-linecap="round" stroke-linejoin="round"/>
   </svg>`,
 
-  checkAmber: `<svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-    <path d="M2.5 6l2.5 2.5 4.5-5" stroke="#fbbf24" stroke-width="1.6"
+  checkAmber: `<svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+    <path d="M2.5 7l3 3 6-6" stroke="#fbbf24" stroke-width="1.8"
       stroke-linecap="round" stroke-linejoin="round"/>
   </svg>`,
 
-  cross: `<svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-    <path d="M3.5 3.5l5 5M8.5 3.5l-5 5" stroke="#2d4a30" stroke-width="1.2"
+  cross: `<svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+    <path d="M4 4l6 6M10 4l-6 6" stroke="#3E4260" stroke-width="1.5"
       stroke-linecap="round"/>
   </svg>`,
 
-  warn: `<svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-    <path d="M5.13 2.3a1 1 0 011.74 0l4 7A1 1 0 0110 11H2a1 1 0 01-.87-1.5l4-7z"
-      stroke="#f87171" stroke-width="1.1" stroke-linejoin="round"/>
-    <path d="M6 5v2.5M6 9v.4" stroke="#f87171" stroke-width="1.2" stroke-linecap="round"/>
+  warn: `<svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+    <path d="M6 2.3a1.15 1.15 0 012 0l4.5 8A1.15 1.15 0 0111.5 12h-9a1.15 1.15 0 01-1-1.7l4.5-8z"
+      stroke="#f87171" stroke-width="1.3" stroke-linejoin="round"/>
+    <path d="M7 5.5V8.5M7 10v.5" stroke="#f87171" stroke-width="1.4" stroke-linecap="round"/>
   </svg>`,
 
   spinner: `<div class="spin"></div>`,
@@ -173,20 +173,16 @@ function refreshCounter() {
 
 // ── Create a result row (pending state) ────────────────────────────
 function makeRow(id, delay) {
-  const div = document.createElement('div');
-  div.className = 'ri';
-  div.id = `ri-${id}`;
-  div.style.animationDelay = `${delay}ms`;
-  div.setAttribute('role', 'listitem');
-  div.innerHTML = `
-    <div class="ri-icon">${SVG.clock}</div>
-    <div class="ri-body">
-      <div class="ri-id">${id}</div>
-      <div class="ri-detail"></div>
-    </div>
-    <div class="ri-badge">várakozás</div>
+  const tr = document.createElement('tr');
+  tr.className = 'ri';
+  tr.id = `ri-${id}`;
+  tr.style.animationDelay = `${delay}ms`;
+  tr.innerHTML = `
+    <td class="ri-id">${id}</td>
+    <td class="ri-status"><span class="ri-badge">–</span></td>
+    <td class="ri-detail"></td>
   `;
-  return div;
+  return tr;
 }
 
 // ── Update a result row ────────────────────────────────────────────
@@ -196,45 +192,38 @@ function setRow(id, state, payload) {
 
   row.className = `ri s-${state}`;
 
-  const icon   = row.querySelector('.ri-icon');
-  const detail = row.querySelector('.ri-detail');
   const badge  = row.querySelector('.ri-badge');
+  const detail = row.querySelector('.ri-detail');
 
   switch (state) {
 
     case 'checking':
-      icon.innerHTML    = SVG.spinner;
-      badge.textContent = 'ellenőrzés…';
+      badge.innerHTML = `<div class="spin"></div> Ellenőrzés…`;
       break;
 
     case 'car': {
-      icon.innerHTML    = SVG.checkGreen;
-      badge.textContent = 'NYERTES · AUTÓ';
       const sw = payload?.sweepstakes?.[0];
       const dateStr = sw?.lotDate ? fmtDate(sw.lotDate) : null;
+      badge.textContent = '✓ Nyertes – Autó';
       detail.innerHTML = [
-        `<strong>${sw?.carType}</strong>`,
-        dateStr ? `Sorsolás dátuma: ${dateStr}` : null,
-      ].filter(Boolean).join('<br>');
+        sw?.carType ? `<strong>${sw.carType}</strong>` : null,
+        dateStr,
+      ].filter(Boolean).join(' &middot; ');
       break;
     }
 
     case 'cash':
-      icon.innerHTML    = SVG.checkAmber;
-      badge.textContent = 'NYERTES · KÉSZPÉNZ';
-      detail.innerHTML  =
-        'A sorsolás régebbi keletű — a nyeremény <strong>készpénzben igényelhető</strong> az OTP Banknál.';
+      badge.textContent = '✓ Nyertes – Készpénz';
+      detail.innerHTML = 'Készpénzben igényelhető az <strong>OTP Banknál</strong>';
       break;
 
     case 'lost':
-      icon.innerHTML    = SVG.cross;
-      badge.textContent = 'nem nyert';
-      detail.textContent = 'Ez az azonosító sajnos nem nyertes.';
+      badge.textContent = 'Nem nyert';
+      detail.textContent = '';
       break;
 
     case 'error':
-      icon.innerHTML    = SVG.warn;
-      badge.textContent = 'hiba';
+      badge.textContent = 'Hiba';
       detail.textContent = payload?.msg || 'Hálózati hiba — próbáld újra.';
       break;
   }
@@ -267,13 +256,28 @@ async function runCheck() {
   el.summary.classList.remove('show');
   el.resetBtn.classList.remove('show');
 
+  // Build results table
+  const wrap = document.createElement('div');
+  wrap.className = 'result-table-wrap';
+  wrap.innerHTML = `
+    <table class="result-table">
+      <thead><tr>
+        <th>Betétszám</th>
+        <th>Eredmény</th>
+        <th>Részletek</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>`;
+  el.results.appendChild(wrap);
+  const tbody = wrap.querySelector('tbody');
+
   // Show progress bar
   el.progCard.classList.add('show');
   setProgress(0, ids.length);
   setStatus('Elindítás…', false);
 
   // Pre-render all rows so the user sees the full queue
-  ids.forEach((id, i) => el.results.appendChild(makeRow(id, i * 35)));
+  ids.forEach((id, i) => tbody.appendChild(makeRow(id, i * 35)));
 
   let carWins = 0, cashWins = 0, errors = 0;
 
