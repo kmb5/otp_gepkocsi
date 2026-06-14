@@ -40,7 +40,7 @@ jobs:
         uses: appleboy/ssh-action@v1
         with:
           host: 167.233.32.95
-          username: root
+          username: deploy
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             docker compose -f /opt/otp-gepkocsi/docker-compose.yml pull
