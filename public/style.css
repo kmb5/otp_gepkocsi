@@ -508,3 +508,121 @@ textarea:focus {
   color: var(--on-faint);
   letter-spacing: 0.04em;
 }
+
+/* ── Mobile responsive ──────────────────────────────────────────── */
+@media (max-width: 500px) {
+
+  body {
+    padding: 0 0.75rem 3rem;
+  }
+
+  .header {
+    padding: 2rem 0 1.25rem;
+  }
+
+  .header-title {
+    font-size: clamp(1.7rem, 8vw, 2.25rem);
+  }
+
+  .header-sub {
+    font-size: 0.83rem;
+  }
+
+  /* ── Summary: collapse to 2×2 grid ── */
+  .summary-card.show {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .summary-divider {
+    display: none;
+  }
+
+  .summary-stat {
+    width: 100%;
+    text-align: center;
+    padding: 1rem 0.5rem;
+  }
+
+  /* top-left: Autónyeremény */
+  .summary-stat:nth-child(1) {
+    border-right: 1px solid var(--outline);
+    border-bottom: 1px solid var(--outline);
+  }
+  /* top-right: Készpénznyeremény */
+  .summary-stat:nth-child(3) {
+    border-bottom: 1px solid var(--outline);
+  }
+  /* bottom-left: Ellenőrzött */
+  .summary-stat:nth-child(5) {
+    border-right: 1px solid var(--outline);
+  }
+  /* bottom-right: Hiba — no extra borders */
+
+  .summary-num {
+    font-size: 1.875rem;
+  }
+
+  .summary-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Results table: card-style rows ── */
+  .result-table thead {
+    display: none;
+  }
+
+  .result-table tbody tr.ri {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    padding: 0.75rem 1rem;
+    gap: 0.2rem 0.5rem;
+  }
+
+  .result-table td {
+    padding: 0;
+    vertical-align: middle;
+  }
+
+  .ri-id {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
+    font-size: 0.875rem;
+  }
+
+  .ri-status {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: center;
+    width: auto;
+  }
+
+  .ri-detail {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    font-size: 0.73rem;
+  }
+
+  .ri-detail:empty {
+    display: none;
+  }
+
+}
+
+/* ── Very small screens: stack action buttons ── */
+@media (max-width: 360px) {
+  .action-row {
+    flex-direction: column;
+  }
+
+  .btn-ghost {
+    padding: 0.75rem 1rem;
+    justify-content: center;
+  }
+}
