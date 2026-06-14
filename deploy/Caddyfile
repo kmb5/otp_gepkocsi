@@ -1,0 +1,9 @@
+# ── OTP Gépkocsi Nyeremény ───────────────────────────────────────────
+otp.bendeguzkovacs.com {
+    reverse_proxy otp-gepkocsi:3000
+}
+
+# ── Add future apps below, e.g: ──────────────────────────────────────
+# anotherapp.bendeguzkovacs.com {
+#     reverse_proxy another-app:PORT
+# }
